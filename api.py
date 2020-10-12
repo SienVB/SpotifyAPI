@@ -41,14 +41,24 @@ while True:
         max_results = len(response.json()['artists']['items'])
 
 
-    #Loop over json and print results
+    #Table header
+    t = PrettyTable(['Name','Followers', 'Popularity', 'Genres'])
+    #Loop over json and print results in table
     n = 0
-    t = PrettyTable(['Name', 'Popularity'])
     while n < max_results:
         name = (response.json()['artists']['items'][n]['name'])
+        followers = (response.json()['artists']['items'][n]['followers']['total'])
         pop = str((response.json()['artists']['items'][n]['popularity']))
+
+        #Only show first 3 genres
+        #Errorhandle: if less than 3 genres, show only those
+        if len(response.json()['artists']['items'][n]['genres']) > 3:
+            genres = (response.json()['artists']['items'][n]['genres'][0-2])
+        else:
+            genres = (response.json()['artists']['items'][n]['genres'])
         
-        t.add_row([name, pop])
+        t.add_row([name, followers, pop, genres])
         n += 1
 
     print(t)
+        
